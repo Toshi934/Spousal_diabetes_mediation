@@ -30,5 +30,5 @@ return scalar PAI = `PAI'
 
 end
 
-bootstrap r(TE) r(TDE) r(CDE) r(Intref) r(Intmed) r(PIE) r(PM) r(PDE) r(PAI), reps(500) seed(123): med_4way
+bootstrap r(TE) r(TDE) r(CDE) r(Intref) r(Intmed) r(PIE) r(PM) r(PDE) r(PAI), reps(1000) seed(123): med_4way
 estat bootstrap, all
