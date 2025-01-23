@@ -1,4 +1,4 @@
-*mediation analysis (main analysis)
+*mediation analysis (sensitivity analysis using health screening data)
 
 *import data
 import delimited "primary_insured.csv", clear
