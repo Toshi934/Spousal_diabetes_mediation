@@ -1,4 +1,4 @@
-*mediation analysis (main analysis)
+*mediation analysis (analysis using dependent as index individual)
 
 *import data
 import delimited "dependent.csv", clear
