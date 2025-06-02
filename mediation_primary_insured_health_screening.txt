@@ -1,0 +1,32 @@
+*mediation analysis (sensitivity analysis using health screening data)
+
+*import data
+import delimited "primary_insured.csv", clear
+
+*set up mediation analysis
+capture program drop med_4way
+program define med_4way, rclass
+
+stset time, failure(outcome)
+med4way exposure mediator sex age age_spouse incomeq2 incomeq3 incomeq4 hist_hypertension hist_cvd hist_dm hist_hypertension_spouse hist_depression_spouse smoking alcohol_2 alcohol_3 physical_activity antihypertensive_drug bmi total_cholesterol sys_bp dia_bp hdl fig egfr, a0(0) a1(1) m(1) yreg(cox) mreg(logistic)
+
+local TE = exp(_b[tereri]) *total effect
+local CDE = exp(_b[ereri_cde]) *controlled direct effect
+local Intref = exp(_b[ereri_intref]) *reference interaction
+local Intmed = exp(_b[ereri_intmed]) *mediated interaction
+local PIE = exp(_b[ereri_pie]) *pure indirect effect
+local PAI = exp(_b[ereri_intref]+_b[ereri_intmed]) *portion attributable to interaction
+local PM = (`PIE' -1)/(`TE' -1) *proportion mediated 
+
+return scalar TE = `TE'
+return scalar CDE = `CDE'
+return scalar Intref = `Intref'
+return scalar Intmed = `Intmed'
+return scalar PIE = `PIE'
+return scalar PM = `PM'
+return scalar PAI = `PAI'
+
+end
+
+bootstrap r(TE) r(CDE) r(Intref) r(Intmed) r(PIE) r(PM) r(PAI), reps(1000) seed(123): med_4way
+estat bootstrap, all
